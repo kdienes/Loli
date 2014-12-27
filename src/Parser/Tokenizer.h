@@ -18,7 +18,7 @@
 #include <vector>
 
 
-namespace marklang {
+namespace lolilang {
 namespace tokenizer {
 
 
@@ -98,4 +98,4 @@ private:
 
 
 } // namespace tokenizer
-} // namespace marklang
+} // namespace lolilang

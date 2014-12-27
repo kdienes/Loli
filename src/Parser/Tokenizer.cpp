@@ -15,7 +15,7 @@
 #include "Tokenizer.h"
 
 
-using namespace marklang;
+using namespace lolilang;
 using namespace tokenizer;
 
 
