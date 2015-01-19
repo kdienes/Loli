@@ -12,14 +12,12 @@
 //-------------------------------------------------//
 
 
-#include <iostream>
 #include <fstream>
 #include <string>
 #include <vector>
 
 
 namespace lolilang {
-namespace tokenizer {
 
 
 // --------------------------- //
@@ -53,7 +51,7 @@ enum TokenType
     EMPTY,
     ERRORTOKEN
 };
-    
+
 
 // --------------------------- //
 // Token class
@@ -61,13 +59,12 @@ enum TokenType
 class Token
 {
 public:
-    // Constructor and Destructor
-    Token(TokenType type, std::string &token, int linum);
-    ~Token();
-        
     TokenType type;
     std::string token;
     int linum;
+
+    Token(TokenType type, std::string &token, int linum);
+    ~Token();
 };
 
 
@@ -81,15 +78,11 @@ public:
     typedef std::vector<Token> TokenStream_t; 
     TokenStream_t token_stream;
 
-    // Constructor and Destructor
     Tokenizer();
     ~Tokenizer();
         
     // Scan the next character
     void scan(std::istream &file);
-
-    // Dump the token stream
-    void dump_tokens();
 
 private:
     // find type of character
@@ -97,5 +90,4 @@ private:
 };
 
 
-} // namespace tokenizer
 } // namespace lolilang

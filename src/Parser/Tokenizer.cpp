@@ -16,7 +16,6 @@
 
 
 using namespace lolilang;
-using namespace tokenizer;
 
 
 // --------------------------- //
@@ -320,22 +319,5 @@ void Tokenizer::scan(std::istream &file)
         }
                 
     } // while loop
-}
-
-
-// Dump token stream for debug
-void Tokenizer::dump_tokens()
-{
-    for (std::vector<Token>::iterator i = token_stream.begin();
-         i != token_stream.end();
-         ++i) {
-        
-        std::cout << i->type 
-                  << "\t"   
-                  << i->token 
-                  << "\t"
-                  << i->linum
-                  << std::endl;
-    }
 }
 

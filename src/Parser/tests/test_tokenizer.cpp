@@ -5,8 +5,26 @@
 
 #include "../Tokenizer.h"
 
-using namespace marklang;
-using namespace tokenizer;
+using namespace lolilang;
+
+// Dump token stream for debug
+void dump_tokens(Tokenizer &tokenizer)
+{
+    Tokenizer::TokenStream_t token_stream = tokenizer.token_stream;
+    for (std::vector<Token>::iterator i = token_stream.begin();
+         i != token_stream.end();
+         ++i) {
+        
+        std::cout << i->type 
+                  << "\t"   
+                  << i->token 
+                  << "\t"
+                  << i->linum
+                  << std::endl;
+    }
+}
+
+
 
 int main()
 {
@@ -14,7 +32,7 @@ int main()
 
     tokenizer.scan(std::cin);
 
-    tokenizer.dump_tokens();
+    dump_tokens(tokenizer);
 }
 
     
