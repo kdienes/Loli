@@ -1,0 +1,90 @@
+# Loli Language Grammar           
+#                                            
+# This file describes the language grammar in formal BNF syntax,
+# with ideas and inputs from Scheme R7RS
+# http://www.scheme-reports.org/
+# 
+# author: Kevin Hu <hxy9243@gmail.com>
+# last edit: Jan, 2015
+
+
+## The basic grammar for lang expression
+<expression> -> <identifier>
+              | <literal>
+              | <procedural call>
+              | <lambda expression>         
+              | <conditional>
+              | <assignment>
+              | <derived expression>
+
+## The literal
+## examples
+## <quotation>: '(:true) (quote :true)
+## <vector>   : ??
+## <character>: 'a'
+<literal>         -> <quotation>
+                   | <self-evaluating>
+<self-evaluating> -> <boolean>
+                   | <number>
+                   | <vector>
+                   | <character>
+                   | <string>
+
+
+## Procedural call
+## example
+## (+ 1 (* 3 6))
+<procedural call> -> ( <operator> <operand>* )
+<operator>        -> <expression>
+<operand>         -> <expression>
+
+
+## Type definition
+<type> -> :boolean
+        | :int
+        | :flt
+        | :char
+        | :string
+        | :list  <- ??
+
+
+## Lambda expression
+## (\ :int ((x :int) (y :int)) (+ x y))
+## (lambda :flt (x (y :flt) (z :flt)) (some-func x y z))
+<lambda expression> -> ( \|lambda <type> <formals> <body> )
+<formals>           -> ( <pararm>* 
+                         | <param> 
+                         | (<param>+ . param>)
+                       )
+<param>             -> ( <identifier> <type> )
+                     | <identifier>
+<body>              -> <definition>* <sequence>
+<sequence>          -> <command>* <expression>
+<command>           -> <expression>
+
+
+## Conditional Expression
+## (if (> a b) (- a b) (- b a))
+<conditional> -> ( if <test> <consequent> <alternate> )
+<test>        -> <expression>
+<consequent>  -> <expression>
+<alternate>   -> <expression> | <emtpy>
+
+
+## Assignment
+## (set! (:int x) (+ a b))
+<assignment> -> ( set! <param> <identifier> <expression> )
+
+
+## Derived expression
+## (when (> a 0) (let! a (- a 1)))
+<derived expression> -> 
+  ( cond <cond clause>+ )
+  | ( cond <cond clause>* ( else <sequence> ) )
+  | ( when <test> <sequence> )
+
+
+## Definition
+## (def (x :int) 100)
+## (def (x :int) (+ a b))
+( def <param> <expression> )
