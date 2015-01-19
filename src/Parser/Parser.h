@@ -12,6 +12,10 @@
 //-------------------------------------------------//
 
 
+#ifndef __PARSER_H__
+#define __PARSER_H__
+
+
 #include "Tokenizer.h"
 #include "AST.h"
 
@@ -37,6 +41,7 @@ private:
 }
 
 
-
-
 } // namespace lolilang
+
+
+#endif

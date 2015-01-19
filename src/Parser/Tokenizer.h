@@ -12,6 +12,10 @@
 //-------------------------------------------------//
 
 
+#ifndef __TOKENIZER_H__
+#define __TOKENIZER_H__
+
+
 #include <fstream>
 #include <string>
 #include <vector>
@@ -91,3 +95,6 @@ private:
 
 
 } // namespace lolilang
+
+
+#endif

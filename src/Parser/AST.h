@@ -11,6 +11,10 @@
 //-------------------------------------------------//
 
 
+#ifndef __AST_H__
+#define __AST_H__
+
+
 namespace lolilang {
 
 
@@ -43,3 +47,6 @@ private:
 
 
 } // namespace
+
+
+#endif
