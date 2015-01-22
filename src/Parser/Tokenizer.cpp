@@ -129,24 +129,34 @@ void Tokenizer::scan(std::istream &file)
 
         // NUMBERS
         if (findCharType(c) == NUMBER_CHAR) {
+            enum States {
+                BEGIN,
+                FRACTION,
+                EXPO_SIGN,
+                EXPO_NUM,
+                EXPO_NUM_FOLLOW,
+                END,
+                ERRORNUM
+            };
+
             int state = 0;
             buffer += c;
 
             // starting FSM
             while (file.get(next)) {
                 switch (state) {
-                case 0: 
+                case BEGIN:
                     if (findCharType(next) == NUMBER_CHAR) {
                         buffer += next;
                     }
                     else if (next == '.') {
                         buffer += next;
-                        state = 1;
+                        state = FRACTION;
                     }
                     else if (next == 'e' || next == 'E'
                              || next == 'd' || next == 'D') {
                         buffer += next;
-                        state = 2;
+                        state = EXPO_SIGN;
                     }
                     else if (findCharType(next) == SPECIAL_CHAR
                              || findCharType(next) == SPECIAL_IDEN
@@ -154,10 +164,10 @@ void Tokenizer::scan(std::istream &file)
                         state = 5;
                     }
                     else {
-                        state = -1;
+                        state = ERRORNUM;
                     }
                     break;
-                case 1:
+                case FRACTION:
                     if (findCharType(next) == NUMBER_CHAR) {
                         buffer += next;
                     }
@@ -172,55 +182,57 @@ void Tokenizer::scan(std::istream &file)
                         state = 5;
                     }
                     else {
-                        state = -1;
+                        state = ERRORNUM;
                     }
                     break;
-                case 2:
+                case EXPO_SIGN:
                     if (next == '+' || next == '-') {
                         buffer += next;
-                        state = 3;
+                        state = EXPO_NUM;
                     }
                     else if (findCharType(next) == NUMBER_CHAR) {
                         buffer += next;
-                        state = 4;
+                        state = EXPO_NUM_FOLLOW;
                     }
                     else {
-                        state = -1;
+                        state = ERRORNUM;
                     }
                     break;
-                case 3:
+                case EXPO_NUM:
                     if (findCharType(next) == NUMBER_CHAR) {
                         buffer += next;
-                        state = 4;
+                        state = EXPO_NUM_FOLLOW;
                     }
                     else {
-                        state = -1;
+                        state = ERRORNUM;
                     }
                     break;
-                case 4:
+                case EXPO_NUM_FOLLOW:
                     if (findCharType(next) == NUMBER_CHAR) {
                         buffer += next;
                     }
                     else if (findCharType(next) == SPECIAL_CHAR
                              || findCharType(next) == SPECIAL_IDEN
                              || findCharType(next) == EMPTY_CHAR) {
-                        state = 5;
+                        state = END;
                     }
                     else {
-                        state = -1;
+                        state = ERRORNUM;
                     }
                     break;
-                case 5:
+                case END:
                     break;
                 default:
                     break;
                 }
-                if (state == 5) {
+
+                // End FSM
+                if (state == END) {
                     file.putback(next);
                     token_stream.push_back(Token(NUMBER, buffer, linum));
                     break;
                 }
-                else if (state == -1) {
+                else if (state == ERRORNUM) {
                     file.putback(next);
                     token_stream.push_back(Token(ERRORTOKEN, buffer, linum));
                     break;
